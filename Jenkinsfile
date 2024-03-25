@@ -2,7 +2,7 @@ node {
 
   stage('Clone') {
       dir('.') {
-          git branch: 'master', credentialsId: 'github_com', url: 'git@github.com:BadrOuaddah/JenKins-java-example.git'
+          git branch: 'master', credentialsId: 'Jenkins-testing', url: 'git@github.com:BadrOuaddah/JenKins-java-example.git'
       }
   }
 
@@ -14,26 +14,17 @@ node {
 
   stage('Publish') {
      withCredentials([usernamePassword(
-        credentialsId: 'github-publish-maven',
-        passwordVariable: 'MVN_PASSWORD',
-        usernameVariable: 'MVN_USERNAME')]) {
+        credentialsId: 'Jenkins-testing',
+        usernameVariable: 'Badr.Ouaddah.07@gmail.com')]) {
 
         withGradle {
           sh """
             ./gradlew -i --stacktrace publish \
                 -PMVN_USERNAME=${MVN_USERNAME} \
-                -PMVN_PASSWORD=${MVN_PASSWORD} \
                 -PMVN_VERSION=1.${BUILD_NUMBER}
           """
         }
      }
-  }
-
-  stage('Post') {
-    jacoco()
-    junit 'lib/build/test-results/test/*.xml'
-    def pmd = scanForIssues tool: [$class: 'Pmd'], pattern: 'lib/build/reports/pmd/*.xml'
-    publishIssues issues: [pmd]
   }
 
 }
