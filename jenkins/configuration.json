@@ -3,9 +3,16 @@
     {
       "scope": "GLOBAL",
       "id": "Jenkins-testing",
-      "username": "",
-      "password": "",
-      "description": "Jenkins testing credentials"
+      "username": "username",
+      "password": "password",
+      "description": "Jenkins testing credentials",
+    }
+  ],
+  "jobs": [
+    {
+      "name": "example-job",
+      "description": "This is an example job that uses a Jenkinsfile",
+      "jenkinsfile": "pipeline { agent any; stages { stage('Build') { steps { sh './gradlew clean build --stacktrace -i' } } } }"
     }
   ]
 }
