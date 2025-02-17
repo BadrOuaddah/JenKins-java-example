@@ -3,9 +3,9 @@
     {
       "scope": "GLOBAL",
       "id": "Jenkins-testing",
-      "username": "username",
+      "username": "admin",
       "password": "password",
-      "description": "Jenkins testing credentials",
+      "description": "Jenkins admin credentials"
     }
   ],
   "jobs": [
