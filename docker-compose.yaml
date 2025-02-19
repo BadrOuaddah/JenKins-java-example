@@ -13,10 +13,11 @@ services:
     environment:
       - JENKINS_USER=${JENKINS_USER}
       - JENKINS_PASS=${JENKINS_PASS}
+      - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./jenkins/configuration.json:/var/jenkins_home/configuration.json
+      - ./jenkins/configuration.yaml:/var/jenkins_home/configuration.yaml
 
 volumes:
   jenkins_home:
