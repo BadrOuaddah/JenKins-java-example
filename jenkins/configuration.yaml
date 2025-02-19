@@ -1,18 +1,43 @@
-{
-  "credentials": [
-    {
-      "scope": "GLOBAL",
-      "id": "Jenkins-testing",
-      "username": "admin",
-      "password": "password",
-      "description": "Jenkins admin credentials"
-    }
-  ],
-  "jobs": [
-    {
-      "name": "example-job",
-      "description": "This is an example job that uses a Jenkinsfile",
-      "jenkinsfile": "pipeline { agent any; stages { stage('Build') { steps { sh './gradlew clean build --stacktrace -i' } } } }"
-    }
-  ]
-}
+jenkins:
+  systemMessage: "Welcome to Jenkins configured as Code!"
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "password"
+
+  authorizationStrategy: "loggedInUsersCanDoAnything"
+
+  credentials:
+    system:
+      domainCredentials:
+        - credentials:
+            - usernamePassword:
+                id: "Jenkins-testing"
+                scope: GLOBAL
+                username: "admin"
+                password: "password"
+                description: "Jenkins admin credentials"
+
+  jobs:
+    - script: >
+        pipelineJob('example-job') {
+            description('This is an example job that uses a Jenkinsfile')
+            definition {
+                cps {
+                    script("""
+                    pipeline {
+                        agent any
+                        stages {
+                            stage('Build') {
+                                steps {
+                                    sh './gradlew clean build --stacktrace -i'
+                                }
+                            }
+                        }
+                    }
+                    """.stripIndent())
+                }
+            }
+        }
